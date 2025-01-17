@@ -1,0 +1,3439 @@
+version 3
+run General-0-20250109-18:49:59-18402
+attr configname General
+attr datetime 20250109-18:49:59
+attr datetimef 20250109-184959
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsd ""
+attr iterationvarsf ""
+attr measurement ""
+attr network IoTCommunication
+attr processid 18402
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+config image-path ../../inet4.5/images
+config network IoTCommunication
+config sim-time-limit 20s
+config *.satellite.mobility.typename StationaryMobility
+config *.satellite.mobility.initialX 400m
+config *.satellite.mobility.initialY 100m
+config *.satellite.mobility.initialZ 500km
+config *.baseStation.mobility.typename StationaryMobility
+config *.baseStation.mobility.initialX 400m
+config *.baseStation.mobility.initialY 300m
+config *.baseStation.mobility.initialZ 0m
+config *.iotDevice[*].mobility.typename StationaryMobility
+config *.iotDevice[0].mobility.initialX 350m
+config *.iotDevice[0].mobility.initialY 500m
+config *.iotDevice[0].mobility.initialZ 0m
+config *.iotDevice[1].mobility.initialX 450m
+config *.iotDevice[1].mobility.initialY 500m
+config *.iotDevice[1].mobility.initialZ 0m
+config *.iotDevice[0].numApps 1
+config *.iotDevice[0].app[0].typename UdpBasicApp
+config *.iotDevice[0].app[0].destAddresses "\"satellite\""
+config *.iotDevice[0].app[0].destPort 12345
+config *.iotDevice[0].app[0].startTime "uniform(0s, 1s)"
+config *.iotDevice[0].app[0].stopTime 20s
+config *.iotDevice[0].app[0].messageLength 100B
+config *.iotDevice[0].app[0].sendInterval 2s
+config *.iotDevice[1].numApps 1
+config *.iotDevice[1].app[0].typename UdpBasicApp
+config *.iotDevice[1].app[0].destAddresses "\"baseStation\""
+config *.iotDevice[1].app[0].destPort 12346
+config *.iotDevice[1].app[0].startTime "uniform(0s, 1s)"
+config *.iotDevice[1].app[0].stopTime 20s
+config *.iotDevice[1].app[0].messageLength 200B
+config *.iotDevice[1].app[0].sendInterval 3s
+config *.configurator.autoassignAddresses true
+config **.recordScalar false
+config **.recordVector false
+config *.iotDevice[*].app[*].packetSent true
+config *.iotDevice[*].app[*].packetReceived true
+config *.iotDevice[*].app[*].packetLoss true
+config *.iotDevice[*].app[*].throughput true
+config *.iotDevice[*].app[*].endToEndDelay:vector true
+config *.iotDevice[*].app[*].throughput:vector true
+config *.satellite.ethg[*].queueingTime true
+config *.baseStation.ethg[*].queueingTime true
+config **.app[*].recordScalar true
+config **.app[*].recordVector true
+
+vector 0 IoTCommunication.satellite.ethernet encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source encapPk
+attr title "packets encapsulated, packetBytes"
+vector 1 IoTCommunication.satellite.ethernet decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source decapPk
+attr title "packets decapsulated, packetBytes"
+vector 2 IoTCommunication.satellite.ethernet pauseSent:vector ETV
+attr recordingmode vector
+attr title "pause sent"
+vector 3 IoTCommunication.satellite.lo[0].lo rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, packetBytes"
+vector 4 IoTCommunication.satellite.lo[0].lo passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToUpper
+attr title "packets passed to higher layer, packetBytes"
+vector 5 IoTCommunication.satellite.lo[0] packetDropInterfaceDown:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drops: interface down, packetBytes"
+vector 6 IoTCommunication.satellite.lo[0] packetDropNoCarrier:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoCarrier(packetDropped)
+attr title "packet drops: no carrier, packetBytes"
+vector 7 IoTCommunication.satellite.eth[0].queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + count(packetPushStarted) - count(packetPulled) - count(packetRemoved) - count(packetDropped)))"
+attr title "queue length"
+attr unit pk
+vector 8 IoTCommunication.satellite.eth[0].queue queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + sum(packetLength(packetPushStarted)) - sum(packetLength(packetPulled)) - sum(packetLength(packetRemoved)) - sum(packetLength(packetDropped))))"
+attr title "queue bit length"
+attr unit b
+vector 9 IoTCommunication.satellite.eth[0].queue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+vector 10 IoTCommunication.satellite.eth[0].queue incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushStarted)
+attr title "incoming packet lengths"
+attr unit b
+vector 11 IoTCommunication.satellite.eth[0].queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+vector 12 IoTCommunication.satellite.eth[0].queue outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "outgoing packet lengths"
+attr unit b
+vector 13 IoTCommunication.satellite.eth[0].queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+vector 14 IoTCommunication.satellite.eth[0].queue droppedPacketLengthsQueueOverflow:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetDropReasonIsQueueOverflow(packetDropped))
+attr title "dropped packet lengths: queue overflow"
+attr unit b
+vector 15 IoTCommunication.satellite.eth[0].queue flowQueueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(demuxFlow(packetPulled))
+attr title "flow queueing times"
+attr unit s
+vector 16 IoTCommunication.satellite.eth[0].queue flowIncomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(flowPacketLength(demuxFlow(packetPushStarted)))
+attr title "flow specific incoming data rate"
+attr unit bps
+vector 17 IoTCommunication.satellite.eth[0].queue flowOutgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(flowPacketLength(demuxFlow(packetPulled)))
+attr title "flow specific outgoing data rate"
+attr unit bps
+vector 18 IoTCommunication.satellite.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToLower
+attr title "packets transmitted, packetBytes"
+vector 19 IoTCommunication.satellite.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source rxPkOk
+attr title "packets received OK, packetBytes"
+vector 20 IoTCommunication.satellite.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToUpper
+attr title "packets passed to higher layer, packetBytes"
+vector 21 IoTCommunication.satellite.eth[0].mac txPausePkUnits:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "pause units sent"
+vector 22 IoTCommunication.satellite.eth[0].mac rxPausePkUnits:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "pause units received"
+vector 23 IoTCommunication.satellite.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, packetBytes"
+vector 24 IoTCommunication.satellite.eth[0].mac packetDropIncorrectlyReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, packetBytes"
+vector 25 IoTCommunication.satellite.eth[0].mac packetDropInterfaceDown:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, packetBytes"
+vector 26 IoTCommunication.satellite.eth[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, packetBytes"
+vector 27 IoTCommunication.satellite.eth[0] packetDropInterfaceDown:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drops: interface down, packetBytes"
+vector 28 IoTCommunication.satellite.eth[0] packetDropNoCarrier:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoCarrier(packetDropped)
+attr title "packet drops: no carrier, packetBytes"
+vector 29 IoTCommunication.satellite.ipv4.ip packetDropAddressResolutionFailed:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
+attr title "packet drop: address resolution failed, packetBytes"
+vector 30 IoTCommunication.satellite.ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, packetBytes"
+vector 31 IoTCommunication.satellite.ipv4.ip packetDropForwardingDisabled:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsForwardingDisabled(packetDropped)
+attr title "packet drop: forwarding disabled, packetBytes"
+vector 32 IoTCommunication.satellite.ipv4.ip packetDropNoInterfaceFound:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoInterfaceFound(packetDropped)
+attr title "packet drop: no interface found, packetBytes"
+vector 33 IoTCommunication.satellite.ipv4.ip packetDropNoRouteFound:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, packetBytes"
+vector 34 IoTCommunication.satellite.ipv4.ip packetDropUndefined:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsUndefined(packetDropped)
+attr title "packet drop: undefined, packetBytes"
+vector 35 IoTCommunication.satellite.ipv4.arp arpRequestSent:vector(packetBytes) ETV
+attr recordingmode vector(packetBytes)
+attr source arpRequestSent
+attr title "ARP request sent, packetBytes"
+vector 36 IoTCommunication.satellite.ipv4.arp arpReplySent:vector(packetBytes) ETV
+attr recordingmode vector(packetBytes)
+attr source arpReplySent
+attr title "ARP replies sent, packetBytes"
+vector 37 IoTCommunication.baseStation.ethernet encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source encapPk
+attr title "packets encapsulated, packetBytes"
+vector 38 IoTCommunication.baseStation.ethernet decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source decapPk
+attr title "packets decapsulated, packetBytes"
+vector 39 IoTCommunication.baseStation.ethernet pauseSent:vector ETV
+attr recordingmode vector
+attr title "pause sent"
+vector 40 IoTCommunication.baseStation.lo[0].lo rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, packetBytes"
+vector 41 IoTCommunication.baseStation.lo[0].lo passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToUpper
+attr title "packets passed to higher layer, packetBytes"
+vector 42 IoTCommunication.baseStation.lo[0] packetDropInterfaceDown:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drops: interface down, packetBytes"
+vector 43 IoTCommunication.baseStation.lo[0] packetDropNoCarrier:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoCarrier(packetDropped)
+attr title "packet drops: no carrier, packetBytes"
+vector 44 IoTCommunication.baseStation.eth[0].queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + count(packetPushStarted) - count(packetPulled) - count(packetRemoved) - count(packetDropped)))"
+attr title "queue length"
+attr unit pk
+vector 45 IoTCommunication.baseStation.eth[0].queue queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + sum(packetLength(packetPushStarted)) - sum(packetLength(packetPulled)) - sum(packetLength(packetRemoved)) - sum(packetLength(packetDropped))))"
+attr title "queue bit length"
+attr unit b
+vector 46 IoTCommunication.baseStation.eth[0].queue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+vector 47 IoTCommunication.baseStation.eth[0].queue incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushStarted)
+attr title "incoming packet lengths"
+attr unit b
+vector 48 IoTCommunication.baseStation.eth[0].queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+vector 49 IoTCommunication.baseStation.eth[0].queue outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "outgoing packet lengths"
+attr unit b
+vector 50 IoTCommunication.baseStation.eth[0].queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+vector 51 IoTCommunication.baseStation.eth[0].queue droppedPacketLengthsQueueOverflow:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetDropReasonIsQueueOverflow(packetDropped))
+attr title "dropped packet lengths: queue overflow"
+attr unit b
+vector 52 IoTCommunication.baseStation.eth[0].queue flowQueueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(demuxFlow(packetPulled))
+attr title "flow queueing times"
+attr unit s
+vector 53 IoTCommunication.baseStation.eth[0].queue flowIncomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(flowPacketLength(demuxFlow(packetPushStarted)))
+attr title "flow specific incoming data rate"
+attr unit bps
+vector 54 IoTCommunication.baseStation.eth[0].queue flowOutgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(flowPacketLength(demuxFlow(packetPulled)))
+attr title "flow specific outgoing data rate"
+attr unit bps
+vector 55 IoTCommunication.baseStation.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToLower
+attr title "packets transmitted, packetBytes"
+vector 56 IoTCommunication.baseStation.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source rxPkOk
+attr title "packets received OK, packetBytes"
+vector 57 IoTCommunication.baseStation.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToUpper
+attr title "packets passed to higher layer, packetBytes"
+vector 58 IoTCommunication.baseStation.eth[0].mac txPausePkUnits:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "pause units sent"
+vector 59 IoTCommunication.baseStation.eth[0].mac rxPausePkUnits:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "pause units received"
+vector 60 IoTCommunication.baseStation.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, packetBytes"
+vector 61 IoTCommunication.baseStation.eth[0].mac packetDropIncorrectlyReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, packetBytes"
+vector 62 IoTCommunication.baseStation.eth[0].mac packetDropInterfaceDown:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, packetBytes"
+vector 63 IoTCommunication.baseStation.eth[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, packetBytes"
+vector 64 IoTCommunication.baseStation.eth[0] packetDropInterfaceDown:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drops: interface down, packetBytes"
+vector 65 IoTCommunication.baseStation.eth[0] packetDropNoCarrier:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoCarrier(packetDropped)
+attr title "packet drops: no carrier, packetBytes"
+vector 66 IoTCommunication.baseStation.ipv4.ip packetDropAddressResolutionFailed:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
+attr title "packet drop: address resolution failed, packetBytes"
+vector 67 IoTCommunication.baseStation.ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, packetBytes"
+vector 68 IoTCommunication.baseStation.ipv4.ip packetDropForwardingDisabled:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsForwardingDisabled(packetDropped)
+attr title "packet drop: forwarding disabled, packetBytes"
+vector 69 IoTCommunication.baseStation.ipv4.ip packetDropNoInterfaceFound:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoInterfaceFound(packetDropped)
+attr title "packet drop: no interface found, packetBytes"
+vector 70 IoTCommunication.baseStation.ipv4.ip packetDropNoRouteFound:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, packetBytes"
+vector 71 IoTCommunication.baseStation.ipv4.ip packetDropUndefined:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsUndefined(packetDropped)
+attr title "packet drop: undefined, packetBytes"
+vector 72 IoTCommunication.baseStation.ipv4.arp arpRequestSent:vector(packetBytes) ETV
+attr recordingmode vector(packetBytes)
+attr source arpRequestSent
+attr title "ARP request sent, packetBytes"
+vector 73 IoTCommunication.baseStation.ipv4.arp arpReplySent:vector(packetBytes) ETV
+attr recordingmode vector(packetBytes)
+attr source arpReplySent
+attr title "ARP replies sent, packetBytes"
+vector 74 IoTCommunication.iotDevice[0].ethernet encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source encapPk
+attr title "packets encapsulated, packetBytes"
+vector 75 IoTCommunication.iotDevice[0].ethernet decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source decapPk
+attr title "packets decapsulated, packetBytes"
+vector 76 IoTCommunication.iotDevice[0].ethernet pauseSent:vector ETV
+attr recordingmode vector
+attr title "pause sent"
+vector 77 IoTCommunication.iotDevice[0].lo[0].lo rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, packetBytes"
+vector 78 IoTCommunication.iotDevice[0].lo[0].lo passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToUpper
+attr title "packets passed to higher layer, packetBytes"
+vector 79 IoTCommunication.iotDevice[0].lo[0] packetDropInterfaceDown:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drops: interface down, packetBytes"
+vector 80 IoTCommunication.iotDevice[0].lo[0] packetDropNoCarrier:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoCarrier(packetDropped)
+attr title "packet drops: no carrier, packetBytes"
+vector 81 IoTCommunication.iotDevice[0].eth[0].queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + count(packetPushStarted) - count(packetPulled) - count(packetRemoved) - count(packetDropped)))"
+attr title "queue length"
+attr unit pk
+vector 82 IoTCommunication.iotDevice[0].eth[0].queue queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + sum(packetLength(packetPushStarted)) - sum(packetLength(packetPulled)) - sum(packetLength(packetRemoved)) - sum(packetLength(packetDropped))))"
+attr title "queue bit length"
+attr unit b
+vector 83 IoTCommunication.iotDevice[0].eth[0].queue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+vector 84 IoTCommunication.iotDevice[0].eth[0].queue incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushStarted)
+attr title "incoming packet lengths"
+attr unit b
+vector 85 IoTCommunication.iotDevice[0].eth[0].queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+vector 86 IoTCommunication.iotDevice[0].eth[0].queue outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "outgoing packet lengths"
+attr unit b
+vector 87 IoTCommunication.iotDevice[0].eth[0].queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+vector 88 IoTCommunication.iotDevice[0].eth[0].queue droppedPacketLengthsQueueOverflow:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetDropReasonIsQueueOverflow(packetDropped))
+attr title "dropped packet lengths: queue overflow"
+attr unit b
+vector 89 IoTCommunication.iotDevice[0].eth[0].queue flowQueueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(demuxFlow(packetPulled))
+attr title "flow queueing times"
+attr unit s
+vector 90 IoTCommunication.iotDevice[0].eth[0].queue flowIncomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(flowPacketLength(demuxFlow(packetPushStarted)))
+attr title "flow specific incoming data rate"
+attr unit bps
+vector 91 IoTCommunication.iotDevice[0].eth[0].queue flowOutgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(flowPacketLength(demuxFlow(packetPulled)))
+attr title "flow specific outgoing data rate"
+attr unit bps
+vector 92 IoTCommunication.iotDevice[0].eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToLower
+attr title "packets transmitted, packetBytes"
+vector 93 IoTCommunication.iotDevice[0].eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source rxPkOk
+attr title "packets received OK, packetBytes"
+vector 94 IoTCommunication.iotDevice[0].eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToUpper
+attr title "packets passed to higher layer, packetBytes"
+vector 95 IoTCommunication.iotDevice[0].eth[0].mac txPausePkUnits:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "pause units sent"
+vector 96 IoTCommunication.iotDevice[0].eth[0].mac rxPausePkUnits:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "pause units received"
+vector 97 IoTCommunication.iotDevice[0].eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, packetBytes"
+vector 98 IoTCommunication.iotDevice[0].eth[0].mac packetDropIncorrectlyReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, packetBytes"
+vector 99 IoTCommunication.iotDevice[0].eth[0].mac packetDropInterfaceDown:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, packetBytes"
+vector 100 IoTCommunication.iotDevice[0].eth[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, packetBytes"
+vector 101 IoTCommunication.iotDevice[0].eth[0] packetDropInterfaceDown:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drops: interface down, packetBytes"
+vector 102 IoTCommunication.iotDevice[0].eth[0] packetDropNoCarrier:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoCarrier(packetDropped)
+attr title "packet drops: no carrier, packetBytes"
+vector 103 IoTCommunication.iotDevice[0].ipv4.ip packetDropAddressResolutionFailed:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
+attr title "packet drop: address resolution failed, packetBytes"
+vector 104 IoTCommunication.iotDevice[0].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, packetBytes"
+vector 105 IoTCommunication.iotDevice[0].ipv4.ip packetDropForwardingDisabled:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsForwardingDisabled(packetDropped)
+attr title "packet drop: forwarding disabled, packetBytes"
+vector 106 IoTCommunication.iotDevice[0].ipv4.ip packetDropNoInterfaceFound:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoInterfaceFound(packetDropped)
+attr title "packet drop: no interface found, packetBytes"
+vector 107 IoTCommunication.iotDevice[0].ipv4.ip packetDropNoRouteFound:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, packetBytes"
+vector 108 IoTCommunication.iotDevice[0].ipv4.ip packetDropUndefined:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsUndefined(packetDropped)
+attr title "packet drop: undefined, packetBytes"
+vector 109 IoTCommunication.iotDevice[0].ipv4.arp arpRequestSent:vector(packetBytes) ETV
+attr recordingmode vector(packetBytes)
+attr source arpRequestSent
+attr title "ARP request sent, packetBytes"
+vector 110 IoTCommunication.iotDevice[0].ipv4.arp arpReplySent:vector(packetBytes) ETV
+attr recordingmode vector(packetBytes)
+attr source arpReplySent
+attr title "ARP replies sent, packetBytes"
+vector 111 IoTCommunication.iotDevice[0].udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSent
+attr title "packets sent, packetBytes"
+vector 112 IoTCommunication.iotDevice[0].udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceived
+attr title "packets received, packetBytes"
+vector 113 IoTCommunication.iotDevice[0].udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+vector 114 IoTCommunication.iotDevice[0].udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+vector 115 IoTCommunication.iotDevice[0].udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+vector 116 IoTCommunication.iotDevice[0].app[0] packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceived
+attr title "packets received, packetBytes"
+vector 117 IoTCommunication.iotDevice[0].app[0] throughput:vector ETV
+attr recordingmode vector
+attr source throughput(packetReceived)
+attr title throughput
+attr unit bps
+vector 118 IoTCommunication.iotDevice[0].app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSent
+attr title "packets sent, packetBytes"
+vector 119 IoTCommunication.iotDevice[0].app[0] rcvdPkLifetime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source dataAge(packetReceived)
+attr title "received packet lifetime"
+attr unit s
+vector 120 IoTCommunication.iotDevice[0].app[0] rcvdPkSeqNo:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source appPkSeqNo(packetReceived)
+attr title "received packet sequence number"
+vector 121 IoTCommunication.iotDevice[1].ethernet encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source encapPk
+attr title "packets encapsulated, packetBytes"
+vector 122 IoTCommunication.iotDevice[1].ethernet decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source decapPk
+attr title "packets decapsulated, packetBytes"
+vector 123 IoTCommunication.iotDevice[1].ethernet pauseSent:vector ETV
+attr recordingmode vector
+attr title "pause sent"
+vector 124 IoTCommunication.iotDevice[1].lo[0].lo rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, packetBytes"
+vector 125 IoTCommunication.iotDevice[1].lo[0].lo passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToUpper
+attr title "packets passed to higher layer, packetBytes"
+vector 126 IoTCommunication.iotDevice[1].lo[0] packetDropInterfaceDown:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drops: interface down, packetBytes"
+vector 127 IoTCommunication.iotDevice[1].lo[0] packetDropNoCarrier:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoCarrier(packetDropped)
+attr title "packet drops: no carrier, packetBytes"
+vector 128 IoTCommunication.iotDevice[1].eth[0].queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + count(packetPushStarted) - count(packetPulled) - count(packetRemoved) - count(packetDropped)))"
+attr title "queue length"
+attr unit pk
+vector 129 IoTCommunication.iotDevice[1].eth[0].queue queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + sum(packetLength(packetPushStarted)) - sum(packetLength(packetPulled)) - sum(packetLength(packetRemoved)) - sum(packetLength(packetDropped))))"
+attr title "queue bit length"
+attr unit b
+vector 130 IoTCommunication.iotDevice[1].eth[0].queue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+vector 131 IoTCommunication.iotDevice[1].eth[0].queue incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushStarted)
+attr title "incoming packet lengths"
+attr unit b
+vector 132 IoTCommunication.iotDevice[1].eth[0].queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+vector 133 IoTCommunication.iotDevice[1].eth[0].queue outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "outgoing packet lengths"
+attr unit b
+vector 134 IoTCommunication.iotDevice[1].eth[0].queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+vector 135 IoTCommunication.iotDevice[1].eth[0].queue droppedPacketLengthsQueueOverflow:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetDropReasonIsQueueOverflow(packetDropped))
+attr title "dropped packet lengths: queue overflow"
+attr unit b
+vector 136 IoTCommunication.iotDevice[1].eth[0].queue flowQueueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(demuxFlow(packetPulled))
+attr title "flow queueing times"
+attr unit s
+vector 137 IoTCommunication.iotDevice[1].eth[0].queue flowIncomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(flowPacketLength(demuxFlow(packetPushStarted)))
+attr title "flow specific incoming data rate"
+attr unit bps
+vector 138 IoTCommunication.iotDevice[1].eth[0].queue flowOutgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(flowPacketLength(demuxFlow(packetPulled)))
+attr title "flow specific outgoing data rate"
+attr unit bps
+vector 139 IoTCommunication.iotDevice[1].eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToLower
+attr title "packets transmitted, packetBytes"
+vector 140 IoTCommunication.iotDevice[1].eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source rxPkOk
+attr title "packets received OK, packetBytes"
+vector 141 IoTCommunication.iotDevice[1].eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToUpper
+attr title "packets passed to higher layer, packetBytes"
+vector 142 IoTCommunication.iotDevice[1].eth[0].mac txPausePkUnits:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "pause units sent"
+vector 143 IoTCommunication.iotDevice[1].eth[0].mac rxPausePkUnits:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "pause units received"
+vector 144 IoTCommunication.iotDevice[1].eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, packetBytes"
+vector 145 IoTCommunication.iotDevice[1].eth[0].mac packetDropIncorrectlyReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, packetBytes"
+vector 146 IoTCommunication.iotDevice[1].eth[0].mac packetDropInterfaceDown:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, packetBytes"
+vector 147 IoTCommunication.iotDevice[1].eth[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, packetBytes"
+vector 148 IoTCommunication.iotDevice[1].eth[0] packetDropInterfaceDown:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drops: interface down, packetBytes"
+vector 149 IoTCommunication.iotDevice[1].eth[0] packetDropNoCarrier:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoCarrier(packetDropped)
+attr title "packet drops: no carrier, packetBytes"
+vector 150 IoTCommunication.iotDevice[1].ipv4.ip packetDropAddressResolutionFailed:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
+attr title "packet drop: address resolution failed, packetBytes"
+vector 151 IoTCommunication.iotDevice[1].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, packetBytes"
+vector 152 IoTCommunication.iotDevice[1].ipv4.ip packetDropForwardingDisabled:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsForwardingDisabled(packetDropped)
+attr title "packet drop: forwarding disabled, packetBytes"
+vector 153 IoTCommunication.iotDevice[1].ipv4.ip packetDropNoInterfaceFound:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoInterfaceFound(packetDropped)
+attr title "packet drop: no interface found, packetBytes"
+vector 154 IoTCommunication.iotDevice[1].ipv4.ip packetDropNoRouteFound:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, packetBytes"
+vector 155 IoTCommunication.iotDevice[1].ipv4.ip packetDropUndefined:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetDropReasonIsUndefined(packetDropped)
+attr title "packet drop: undefined, packetBytes"
+vector 156 IoTCommunication.iotDevice[1].ipv4.arp arpRequestSent:vector(packetBytes) ETV
+attr recordingmode vector(packetBytes)
+attr source arpRequestSent
+attr title "ARP request sent, packetBytes"
+vector 157 IoTCommunication.iotDevice[1].ipv4.arp arpReplySent:vector(packetBytes) ETV
+attr recordingmode vector(packetBytes)
+attr source arpReplySent
+attr title "ARP replies sent, packetBytes"
+vector 158 IoTCommunication.iotDevice[1].udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSent
+attr title "packets sent, packetBytes"
+vector 159 IoTCommunication.iotDevice[1].udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceived
+attr title "packets received, packetBytes"
+vector 160 IoTCommunication.iotDevice[1].udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+vector 161 IoTCommunication.iotDevice[1].udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+vector 162 IoTCommunication.iotDevice[1].udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+vector 163 IoTCommunication.iotDevice[1].app[0] packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceived
+attr title "packets received, packetBytes"
+vector 164 IoTCommunication.iotDevice[1].app[0] throughput:vector ETV
+attr recordingmode vector
+attr source throughput(packetReceived)
+attr title throughput
+attr unit bps
+vector 165 IoTCommunication.iotDevice[1].app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSent
+attr title "packets sent, packetBytes"
+vector 166 IoTCommunication.iotDevice[1].app[0] rcvdPkLifetime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source dataAge(packetReceived)
+attr title "received packet lifetime"
+attr unit s
+vector 167 IoTCommunication.iotDevice[1].app[0] rcvdPkSeqNo:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source appPkSeqNo(packetReceived)
+attr title "received packet sequence number"
+0	12	0.548919262304	28
+0	27	0.549137342304	56
+0	84	2.548925822304	56
+0	126	4.548925822304	56
+0	147	6.548925822304	56
+0	189	8.548925822304	56
+0	231	10.548925822304	56
+0	252	12.548925822304	56
+0	294	14.548925822304	56
+0	336	16.548925822304	56
+0	357	18.548925822304	56
+1	10	0.548919262304	46
+1	24	0.549137342304	128
+1	81	2.548925822304	128
+1	123	4.548925822304	128
+1	144	6.548925822304	128
+1	186	8.548925822304	128
+1	228	10.548925822304	128
+1	249	12.548925822304	128
+1	291	14.548925822304	128
+1	333	16.548925822304	128
+1	354	18.548925822304	128
+7	0	0	0
+7	0	0	0
+7	0	0	0
+7	0	0	0
+7	0	0	0
+7	13	0.548919262304	0
+7	28	0.549137342304	0
+7	85	2.548925822304	0
+7	127	4.548925822304	0
+7	148	6.548925822304	0
+7	190	8.548925822304	0
+7	232	10.548925822304	0
+7	253	12.548925822304	0
+7	295	14.548925822304	0
+7	337	16.548925822304	0
+7	358	18.548925822304	0
+8	0	0	0
+8	0	0	0
+8	0	0	0
+8	0	0	0
+8	0	0	0
+8	13	0.548919262304	0
+8	28	0.549137342304	0
+8	85	2.548925822304	0
+8	127	4.548925822304	0
+8	148	6.548925822304	0
+8	190	8.548925822304	0
+8	232	10.548925822304	0
+8	253	12.548925822304	0
+8	295	14.548925822304	0
+8	337	16.548925822304	0
+8	358	18.548925822304	0
+9	13	0.548919262304	0
+9	28	0.549137342304	0
+9	85	2.548925822304	0
+9	127	4.548925822304	0
+9	148	6.548925822304	0
+9	190	8.548925822304	0
+9	232	10.548925822304	0
+9	253	12.548925822304	0
+9	295	14.548925822304	0
+9	337	16.548925822304	0
+9	358	18.548925822304	0
+10	13	0.548919262304	368
+10	28	0.549137342304	592
+10	85	2.548925822304	592
+10	127	4.548925822304	592
+10	148	6.548925822304	592
+10	190	8.548925822304	592
+10	232	10.548925822304	592
+10	253	12.548925822304	592
+10	295	14.548925822304	592
+10	337	16.548925822304	592
+10	358	18.548925822304	592
+11	13	0.1	0
+11	13	0.2	0
+11	13	0.3	0
+11	13	0.4	0
+11	13	0.5	0
+11	85	0.6	9600
+11	85	0.7	0
+11	85	0.8	0
+11	85	0.9	0
+11	85	1	0
+11	85	1.1	0
+11	85	1.2	0
+11	85	1.3	0
+11	85	1.4	0
+11	85	1.5	0
+11	85	1.6	0
+11	85	1.7	0
+11	85	1.8	0
+11	85	1.9	0
+11	85	2	0
+11	85	2.1	0
+11	85	2.2	0
+11	85	2.3	0
+11	85	2.4	0
+11	85	2.5	0
+11	127	2.6	5920
+11	127	2.7	0
+11	127	2.8	0
+11	127	2.9	0
+11	127	3	0
+11	127	3.1	0
+11	127	3.2	0
+11	127	3.3	0
+11	127	3.4	0
+11	127	3.5	0
+11	127	3.6	0
+11	127	3.7	0
+11	127	3.8	0
+11	127	3.9	0
+11	127	4	0
+11	127	4.1	0
+11	127	4.2	0
+11	127	4.3	0
+11	127	4.4	0
+11	127	4.5	0
+11	148	4.6	5920
+11	148	4.7	0
+11	148	4.8	0
+11	148	4.9	0
+11	148	5	0
+11	148	5.1	0
+11	148	5.2	0
+11	148	5.3	0
+11	148	5.4	0
+11	148	5.5	0
+11	148	5.6	0
+11	148	5.7	0
+11	148	5.8	0
+11	148	5.9	0
+11	148	6	0
+11	148	6.1	0
+11	148	6.2	0
+11	148	6.3	0
+11	148	6.4	0
+11	148	6.5	0
+11	190	6.6	5920
+11	190	6.7	0
+11	190	6.8	0
+11	190	6.9	0
+11	190	7	0
+11	190	7.1	0
+11	190	7.2	0
+11	190	7.3	0
+11	190	7.4	0
+11	190	7.5	0
+11	190	7.6	0
+11	190	7.7	0
+11	190	7.8	0
+11	190	7.9	0
+11	190	8	0
+11	190	8.1	0
+11	190	8.2	0
+11	190	8.3	0
+11	190	8.4	0
+11	190	8.5	0
+11	232	8.6	5920
+11	232	8.7	0
+11	232	8.8	0
+11	232	8.9	0
+11	232	9	0
+11	232	9.1	0
+11	232	9.2	0
+11	232	9.3	0
+11	232	9.4	0
+11	232	9.5	0
+11	232	9.6	0
+11	232	9.7	0
+11	232	9.8	0
+11	232	9.9	0
+11	232	10	0
+11	232	10.1	0
+11	232	10.2	0
+11	232	10.3	0
+11	232	10.4	0
+11	232	10.5	0
+11	253	10.6	5920
+11	253	10.7	0
+11	253	10.8	0
+11	253	10.9	0
+11	253	11	0
+11	253	11.1	0
+11	253	11.2	0
+11	253	11.3	0
+11	253	11.4	0
+11	253	11.5	0
+11	253	11.6	0
+11	253	11.7	0
+11	253	11.8	0
+11	253	11.9	0
+11	253	12	0
+11	253	12.1	0
+11	253	12.2	0
+11	253	12.3	0
+11	253	12.4	0
+11	253	12.5	0
+11	295	12.6	5920
+11	295	12.7	0
+11	295	12.8	0
+11	295	12.9	0
+11	295	13	0
+11	295	13.1	0
+11	295	13.2	0
+11	295	13.3	0
+11	295	13.4	0
+11	295	13.5	0
+11	295	13.6	0
+11	295	13.7	0
+11	295	13.8	0
+11	295	13.9	0
+11	295	14	0
+11	295	14.1	0
+11	295	14.2	0
+11	295	14.3	0
+11	295	14.4	0
+11	295	14.5	0
+11	337	14.6	5920
+11	337	14.7	0
+11	337	14.8	0
+11	337	14.9	0
+11	337	15	0
+11	337	15.1	0
+11	337	15.2	0
+11	337	15.3	0
+11	337	15.4	0
+11	337	15.5	0
+11	337	15.6	0
+11	337	15.7	0
+11	337	15.8	0
+11	337	15.9	0
+11	337	16	0
+11	337	16.1	0
+11	337	16.2	0
+11	337	16.3	0
+11	337	16.4	0
+11	337	16.5	0
+11	358	16.6	5920
+11	358	16.7	0
+11	358	16.8	0
+11	358	16.9	0
+11	358	17	0
+11	358	17.1	0
+11	358	17.2	0
+11	358	17.3	0
+11	358	17.4	0
+11	358	17.5	0
+11	358	17.6	0
+11	358	17.7	0
+11	358	17.8	0
+11	358	17.9	0
+11	358	18	0
+11	358	18.1	0
+11	358	18.2	0
+11	358	18.3	0
+11	358	18.4	0
+11	358	18.5	0
+11	394	18.6	5920
+11	394	18.7	0
+11	394	18.8	0
+11	394	18.9	0
+11	394	19	0
+11	394	19.1	0
+11	394	19.2	0
+11	394	19.3	0
+11	394	19.4	0
+11	394	19.5	0
+11	394	19.6	0
+11	394	19.7	0
+11	394	19.8	0
+11	394	19.9	0
+11	394	20	0
+12	13	0.548919262304	368
+12	28	0.549137342304	592
+12	85	2.548925822304	592
+12	127	4.548925822304	592
+12	148	6.548925822304	592
+12	190	8.548925822304	592
+12	232	10.548925822304	592
+12	253	12.548925822304	592
+12	295	14.548925822304	592
+12	337	16.548925822304	592
+12	358	18.548925822304	592
+13	13	0.1	0
+13	13	0.2	0
+13	13	0.3	0
+13	13	0.4	0
+13	13	0.5	0
+13	85	0.6	9600
+13	85	0.7	0
+13	85	0.8	0
+13	85	0.9	0
+13	85	1	0
+13	85	1.1	0
+13	85	1.2	0
+13	85	1.3	0
+13	85	1.4	0
+13	85	1.5	0
+13	85	1.6	0
+13	85	1.7	0
+13	85	1.8	0
+13	85	1.9	0
+13	85	2	0
+13	85	2.1	0
+13	85	2.2	0
+13	85	2.3	0
+13	85	2.4	0
+13	85	2.5	0
+13	127	2.6	5920
+13	127	2.7	0
+13	127	2.8	0
+13	127	2.9	0
+13	127	3	0
+13	127	3.1	0
+13	127	3.2	0
+13	127	3.3	0
+13	127	3.4	0
+13	127	3.5	0
+13	127	3.6	0
+13	127	3.7	0
+13	127	3.8	0
+13	127	3.9	0
+13	127	4	0
+13	127	4.1	0
+13	127	4.2	0
+13	127	4.3	0
+13	127	4.4	0
+13	127	4.5	0
+13	148	4.6	5920
+13	148	4.7	0
+13	148	4.8	0
+13	148	4.9	0
+13	148	5	0
+13	148	5.1	0
+13	148	5.2	0
+13	148	5.3	0
+13	148	5.4	0
+13	148	5.5	0
+13	148	5.6	0
+13	148	5.7	0
+13	148	5.8	0
+13	148	5.9	0
+13	148	6	0
+13	148	6.1	0
+13	148	6.2	0
+13	148	6.3	0
+13	148	6.4	0
+13	148	6.5	0
+13	190	6.6	5920
+13	190	6.7	0
+13	190	6.8	0
+13	190	6.9	0
+13	190	7	0
+13	190	7.1	0
+13	190	7.2	0
+13	190	7.3	0
+13	190	7.4	0
+13	190	7.5	0
+13	190	7.6	0
+13	190	7.7	0
+13	190	7.8	0
+13	190	7.9	0
+13	190	8	0
+13	190	8.1	0
+13	190	8.2	0
+13	190	8.3	0
+13	190	8.4	0
+13	190	8.5	0
+13	232	8.6	5920
+13	232	8.7	0
+13	232	8.8	0
+13	232	8.9	0
+13	232	9	0
+13	232	9.1	0
+13	232	9.2	0
+13	232	9.3	0
+13	232	9.4	0
+13	232	9.5	0
+13	232	9.6	0
+13	232	9.7	0
+13	232	9.8	0
+13	232	9.9	0
+13	232	10	0
+13	232	10.1	0
+13	232	10.2	0
+13	232	10.3	0
+13	232	10.4	0
+13	232	10.5	0
+13	253	10.6	5920
+13	253	10.7	0
+13	253	10.8	0
+13	253	10.9	0
+13	253	11	0
+13	253	11.1	0
+13	253	11.2	0
+13	253	11.3	0
+13	253	11.4	0
+13	253	11.5	0
+13	253	11.6	0
+13	253	11.7	0
+13	253	11.8	0
+13	253	11.9	0
+13	253	12	0
+13	253	12.1	0
+13	253	12.2	0
+13	253	12.3	0
+13	253	12.4	0
+13	253	12.5	0
+13	295	12.6	5920
+13	295	12.7	0
+13	295	12.8	0
+13	295	12.9	0
+13	295	13	0
+13	295	13.1	0
+13	295	13.2	0
+13	295	13.3	0
+13	295	13.4	0
+13	295	13.5	0
+13	295	13.6	0
+13	295	13.7	0
+13	295	13.8	0
+13	295	13.9	0
+13	295	14	0
+13	295	14.1	0
+13	295	14.2	0
+13	295	14.3	0
+13	295	14.4	0
+13	295	14.5	0
+13	337	14.6	5920
+13	337	14.7	0
+13	337	14.8	0
+13	337	14.9	0
+13	337	15	0
+13	337	15.1	0
+13	337	15.2	0
+13	337	15.3	0
+13	337	15.4	0
+13	337	15.5	0
+13	337	15.6	0
+13	337	15.7	0
+13	337	15.8	0
+13	337	15.9	0
+13	337	16	0
+13	337	16.1	0
+13	337	16.2	0
+13	337	16.3	0
+13	337	16.4	0
+13	337	16.5	0
+13	358	16.6	5920
+13	358	16.7	0
+13	358	16.8	0
+13	358	16.9	0
+13	358	17	0
+13	358	17.1	0
+13	358	17.2	0
+13	358	17.3	0
+13	358	17.4	0
+13	358	17.5	0
+13	358	17.6	0
+13	358	17.7	0
+13	358	17.8	0
+13	358	17.9	0
+13	358	18	0
+13	358	18.1	0
+13	358	18.2	0
+13	358	18.3	0
+13	358	18.4	0
+13	358	18.5	0
+13	394	18.6	5920
+13	394	18.7	0
+13	394	18.8	0
+13	394	18.9	0
+13	394	19	0
+13	394	19.1	0
+13	394	19.2	0
+13	394	19.3	0
+13	394	19.4	0
+13	394	19.5	0
+13	394	19.6	0
+13	394	19.7	0
+13	394	19.8	0
+13	394	19.9	0
+13	394	20	0
+18	14	0.548925022304	64
+18	29	0.549143902304	74
+18	86	2.548932382304	74
+18	128	4.548932382304	74
+18	149	6.548932382304	74
+18	191	8.548932382304	74
+18	233	10.548932382304	74
+18	254	12.548932382304	74
+18	296	14.548932382304	74
+18	338	16.548932382304	74
+18	359	18.548932382304	74
+19	9	0.548919262304	64
+19	23	0.549137342304	146
+19	80	2.548925822304	146
+19	122	4.548925822304	146
+19	143	6.548925822304	146
+19	185	8.548925822304	146
+19	227	10.548925822304	146
+19	248	12.548925822304	146
+19	290	14.548925822304	146
+19	332	16.548925822304	146
+19	353	18.548925822304	146
+20	9	0.548919262304	64
+20	23	0.549137342304	146
+20	80	2.548925822304	146
+20	122	4.548925822304	146
+20	143	6.548925822304	146
+20	185	8.548925822304	146
+20	227	10.548925822304	146
+20	248	12.548925822304	146
+20	290	14.548925822304	146
+20	332	16.548925822304	146
+20	353	18.548925822304	146
+23	13	0.548919262304	46
+23	28	0.549137342304	74
+23	85	2.548925822304	74
+23	127	4.548925822304	74
+23	148	6.548925822304	74
+23	190	8.548925822304	74
+23	232	10.548925822304	74
+23	253	12.548925822304	74
+23	295	14.548925822304	74
+23	337	16.548925822304	74
+23	358	18.548925822304	74
+36	11	0.548919262304	28
+37	48	0.592950376389	28
+37	63	0.593176456389	56
+37	105	3.592964936389	56
+37	168	6.592964936389	56
+37	210	9.592964936389	56
+37	273	12.592964936389	56
+37	315	15.592964936389	56
+37	378	18.592964936389	56
+38	46	0.592950376389	46
+38	60	0.593176456389	228
+38	102	3.592964936389	228
+38	165	6.592964936389	228
+38	207	9.592964936389	228
+38	270	12.592964936389	228
+38	312	15.592964936389	228
+38	375	18.592964936389	228
+44	0	0	0
+44	0	0	0
+44	0	0	0
+44	0	0	0
+44	0	0	0
+44	49	0.592950376389	0
+44	64	0.593176456389	0
+44	106	3.592964936389	0
+44	169	6.592964936389	0
+44	211	9.592964936389	0
+44	274	12.592964936389	0
+44	316	15.592964936389	0
+44	379	18.592964936389	0
+45	0	0	0
+45	0	0	0
+45	0	0	0
+45	0	0	0
+45	0	0	0
+45	49	0.592950376389	0
+45	64	0.593176456389	0
+45	106	3.592964936389	0
+45	169	6.592964936389	0
+45	211	9.592964936389	0
+45	274	12.592964936389	0
+45	316	15.592964936389	0
+45	379	18.592964936389	0
+46	49	0.592950376389	0
+46	64	0.593176456389	0
+46	106	3.592964936389	0
+46	169	6.592964936389	0
+46	211	9.592964936389	0
+46	274	12.592964936389	0
+46	316	15.592964936389	0
+46	379	18.592964936389	0
+47	49	0.592950376389	368
+47	64	0.593176456389	592
+47	106	3.592964936389	592
+47	169	6.592964936389	592
+47	211	9.592964936389	592
+47	274	12.592964936389	592
+47	316	15.592964936389	592
+47	379	18.592964936389	592
+48	49	0.1	0
+48	49	0.2	0
+48	49	0.3	0
+48	49	0.4	0
+48	49	0.5	0
+48	106	0.6	9600
+48	106	0.7	0
+48	106	0.8	0
+48	106	0.9	0
+48	106	1	0
+48	106	1.1	0
+48	106	1.2	0
+48	106	1.3	0
+48	106	1.4	0
+48	106	1.5	0
+48	106	1.6	0
+48	106	1.7	0
+48	106	1.8	0
+48	106	1.9	0
+48	106	2	0
+48	106	2.1	0
+48	106	2.2	0
+48	106	2.3	0
+48	106	2.4	0
+48	106	2.5	0
+48	106	2.6	0
+48	106	2.7	0
+48	106	2.8	0
+48	106	2.9	0
+48	106	3	0
+48	106	3.1	0
+48	106	3.2	0
+48	106	3.3	0
+48	106	3.4	0
+48	106	3.5	0
+48	169	3.6	5920
+48	169	3.7	0
+48	169	3.8	0
+48	169	3.9	0
+48	169	4	0
+48	169	4.1	0
+48	169	4.2	0
+48	169	4.3	0
+48	169	4.4	0
+48	169	4.5	0
+48	169	4.6	0
+48	169	4.7	0
+48	169	4.8	0
+48	169	4.9	0
+48	169	5	0
+48	169	5.1	0
+48	169	5.2	0
+48	169	5.3	0
+48	169	5.4	0
+48	169	5.5	0
+48	169	5.6	0
+48	169	5.7	0
+48	169	5.8	0
+48	169	5.9	0
+48	169	6	0
+48	169	6.1	0
+48	169	6.2	0
+48	169	6.3	0
+48	169	6.4	0
+48	169	6.5	0
+48	211	6.6	5920
+48	211	6.7	0
+48	211	6.8	0
+48	211	6.9	0
+48	211	7	0
+48	211	7.1	0
+48	211	7.2	0
+48	211	7.3	0
+48	211	7.4	0
+48	211	7.5	0
+48	211	7.6	0
+48	211	7.7	0
+48	211	7.8	0
+48	211	7.9	0
+48	211	8	0
+48	211	8.1	0
+48	211	8.2	0
+48	211	8.3	0
+48	211	8.4	0
+48	211	8.5	0
+48	211	8.6	0
+48	211	8.7	0
+48	211	8.8	0
+48	211	8.9	0
+48	211	9	0
+48	211	9.1	0
+48	211	9.2	0
+48	211	9.3	0
+48	211	9.4	0
+48	211	9.5	0
+48	274	9.6	5920
+48	274	9.7	0
+48	274	9.8	0
+48	274	9.9	0
+48	274	10	0
+48	274	10.1	0
+48	274	10.2	0
+48	274	10.3	0
+48	274	10.4	0
+48	274	10.5	0
+48	274	10.6	0
+48	274	10.7	0
+48	274	10.8	0
+48	274	10.9	0
+48	274	11	0
+48	274	11.1	0
+48	274	11.2	0
+48	274	11.3	0
+48	274	11.4	0
+48	274	11.5	0
+48	274	11.6	0
+48	274	11.7	0
+48	274	11.8	0
+48	274	11.9	0
+48	274	12	0
+48	274	12.1	0
+48	274	12.2	0
+48	274	12.3	0
+48	274	12.4	0
+48	274	12.5	0
+48	316	12.6	5920
+48	316	12.7	0
+48	316	12.8	0
+48	316	12.9	0
+48	316	13	0
+48	316	13.1	0
+48	316	13.2	0
+48	316	13.3	0
+48	316	13.4	0
+48	316	13.5	0
+48	316	13.6	0
+48	316	13.7	0
+48	316	13.8	0
+48	316	13.9	0
+48	316	14	0
+48	316	14.1	0
+48	316	14.2	0
+48	316	14.3	0
+48	316	14.4	0
+48	316	14.5	0
+48	316	14.6	0
+48	316	14.7	0
+48	316	14.8	0
+48	316	14.9	0
+48	316	15	0
+48	316	15.1	0
+48	316	15.2	0
+48	316	15.3	0
+48	316	15.4	0
+48	316	15.5	0
+48	379	15.6	5920
+48	379	15.7	0
+48	379	15.8	0
+48	379	15.9	0
+48	379	16	0
+48	379	16.1	0
+48	379	16.2	0
+48	379	16.3	0
+48	379	16.4	0
+48	379	16.5	0
+48	379	16.6	0
+48	379	16.7	0
+48	379	16.8	0
+48	379	16.9	0
+48	379	17	0
+48	379	17.1	0
+48	379	17.2	0
+48	379	17.3	0
+48	379	17.4	0
+48	379	17.5	0
+48	379	17.6	0
+48	379	17.7	0
+48	379	17.8	0
+48	379	17.9	0
+48	379	18	0
+48	379	18.1	0
+48	379	18.2	0
+48	379	18.3	0
+48	379	18.4	0
+48	379	18.5	0
+48	394	18.6	5920
+48	394	18.7	0
+48	394	18.8	0
+48	394	18.9	0
+48	394	19	0
+48	394	19.1	0
+48	394	19.2	0
+48	394	19.3	0
+48	394	19.4	0
+48	394	19.5	0
+48	394	19.6	0
+48	394	19.7	0
+48	394	19.8	0
+48	394	19.9	0
+48	394	20	0
+49	49	0.592950376389	368
+49	64	0.593176456389	592
+49	106	3.592964936389	592
+49	169	6.592964936389	592
+49	211	9.592964936389	592
+49	274	12.592964936389	592
+49	316	15.592964936389	592
+49	379	18.592964936389	592
+50	49	0.1	0
+50	49	0.2	0
+50	49	0.3	0
+50	49	0.4	0
+50	49	0.5	0
+50	106	0.6	9600
+50	106	0.7	0
+50	106	0.8	0
+50	106	0.9	0
+50	106	1	0
+50	106	1.1	0
+50	106	1.2	0
+50	106	1.3	0
+50	106	1.4	0
+50	106	1.5	0
+50	106	1.6	0
+50	106	1.7	0
+50	106	1.8	0
+50	106	1.9	0
+50	106	2	0
+50	106	2.1	0
+50	106	2.2	0
+50	106	2.3	0
+50	106	2.4	0
+50	106	2.5	0
+50	106	2.6	0
+50	106	2.7	0
+50	106	2.8	0
+50	106	2.9	0
+50	106	3	0
+50	106	3.1	0
+50	106	3.2	0
+50	106	3.3	0
+50	106	3.4	0
+50	106	3.5	0
+50	169	3.6	5920
+50	169	3.7	0
+50	169	3.8	0
+50	169	3.9	0
+50	169	4	0
+50	169	4.1	0
+50	169	4.2	0
+50	169	4.3	0
+50	169	4.4	0
+50	169	4.5	0
+50	169	4.6	0
+50	169	4.7	0
+50	169	4.8	0
+50	169	4.9	0
+50	169	5	0
+50	169	5.1	0
+50	169	5.2	0
+50	169	5.3	0
+50	169	5.4	0
+50	169	5.5	0
+50	169	5.6	0
+50	169	5.7	0
+50	169	5.8	0
+50	169	5.9	0
+50	169	6	0
+50	169	6.1	0
+50	169	6.2	0
+50	169	6.3	0
+50	169	6.4	0
+50	169	6.5	0
+50	211	6.6	5920
+50	211	6.7	0
+50	211	6.8	0
+50	211	6.9	0
+50	211	7	0
+50	211	7.1	0
+50	211	7.2	0
+50	211	7.3	0
+50	211	7.4	0
+50	211	7.5	0
+50	211	7.6	0
+50	211	7.7	0
+50	211	7.8	0
+50	211	7.9	0
+50	211	8	0
+50	211	8.1	0
+50	211	8.2	0
+50	211	8.3	0
+50	211	8.4	0
+50	211	8.5	0
+50	211	8.6	0
+50	211	8.7	0
+50	211	8.8	0
+50	211	8.9	0
+50	211	9	0
+50	211	9.1	0
+50	211	9.2	0
+50	211	9.3	0
+50	211	9.4	0
+50	211	9.5	0
+50	274	9.6	5920
+50	274	9.7	0
+50	274	9.8	0
+50	274	9.9	0
+50	274	10	0
+50	274	10.1	0
+50	274	10.2	0
+50	274	10.3	0
+50	274	10.4	0
+50	274	10.5	0
+50	274	10.6	0
+50	274	10.7	0
+50	274	10.8	0
+50	274	10.9	0
+50	274	11	0
+50	274	11.1	0
+50	274	11.2	0
+50	274	11.3	0
+50	274	11.4	0
+50	274	11.5	0
+50	274	11.6	0
+50	274	11.7	0
+50	274	11.8	0
+50	274	11.9	0
+50	274	12	0
+50	274	12.1	0
+50	274	12.2	0
+50	274	12.3	0
+50	274	12.4	0
+50	274	12.5	0
+50	316	12.6	5920
+50	316	12.7	0
+50	316	12.8	0
+50	316	12.9	0
+50	316	13	0
+50	316	13.1	0
+50	316	13.2	0
+50	316	13.3	0
+50	316	13.4	0
+50	316	13.5	0
+50	316	13.6	0
+50	316	13.7	0
+50	316	13.8	0
+50	316	13.9	0
+50	316	14	0
+50	316	14.1	0
+50	316	14.2	0
+50	316	14.3	0
+50	316	14.4	0
+50	316	14.5	0
+50	316	14.6	0
+50	316	14.7	0
+50	316	14.8	0
+50	316	14.9	0
+50	316	15	0
+50	316	15.1	0
+50	316	15.2	0
+50	316	15.3	0
+50	316	15.4	0
+50	316	15.5	0
+50	379	15.6	5920
+50	379	15.7	0
+50	379	15.8	0
+50	379	15.9	0
+50	379	16	0
+50	379	16.1	0
+50	379	16.2	0
+50	379	16.3	0
+50	379	16.4	0
+50	379	16.5	0
+50	379	16.6	0
+50	379	16.7	0
+50	379	16.8	0
+50	379	16.9	0
+50	379	17	0
+50	379	17.1	0
+50	379	17.2	0
+50	379	17.3	0
+50	379	17.4	0
+50	379	17.5	0
+50	379	17.6	0
+50	379	17.7	0
+50	379	17.8	0
+50	379	17.9	0
+50	379	18	0
+50	379	18.1	0
+50	379	18.2	0
+50	379	18.3	0
+50	379	18.4	0
+50	379	18.5	0
+50	394	18.6	5920
+50	394	18.7	0
+50	394	18.8	0
+50	394	18.9	0
+50	394	19	0
+50	394	19.1	0
+50	394	19.2	0
+50	394	19.3	0
+50	394	19.4	0
+50	394	19.5	0
+50	394	19.6	0
+50	394	19.7	0
+50	394	19.8	0
+50	394	19.9	0
+50	394	20	0
+55	50	0.592956136389	64
+55	65	0.593183016389	74
+55	107	3.592971496389	74
+55	170	6.592971496389	74
+55	212	9.592971496389	74
+55	275	12.592971496389	74
+55	317	15.592971496389	74
+55	380	18.592971496389	74
+56	45	0.592950376389	64
+56	59	0.593176456389	246
+56	101	3.592964936389	246
+56	164	6.592964936389	246
+56	206	9.592964936389	246
+56	269	12.592964936389	246
+56	311	15.592964936389	246
+56	374	18.592964936389	246
+57	45	0.592950376389	64
+57	59	0.593176456389	246
+57	101	3.592964936389	246
+57	164	6.592964936389	246
+57	206	9.592964936389	246
+57	269	12.592964936389	246
+57	311	15.592964936389	246
+57	374	18.592964936389	246
+60	49	0.592950376389	46
+60	64	0.593176456389	74
+60	106	3.592964936389	74
+60	169	6.592964936389	74
+60	211	9.592964936389	74
+60	274	12.592964936389	74
+60	316	15.592964936389	74
+60	379	18.592964936389	74
+73	47	0.592950376389	28
+74	5	0.548813502304	28
+74	19	0.549025022304	128
+74	76	2.548813502304	128
+74	118	4.548813502304	128
+74	139	6.548813502304	128
+74	181	8.548813502304	128
+74	223	10.548813502304	128
+74	244	12.548813502304	128
+74	286	14.548813502304	128
+74	328	16.548813502304	128
+74	349	18.548813502304	128
+75	17	0.549025022304	46
+75	32	0.549243902304	56
+75	89	2.549032382304	56
+75	131	4.549032382304	56
+75	152	6.549032382304	56
+75	194	8.549032382304	56
+75	236	10.549032382304	56
+75	257	12.549032382304	56
+75	299	14.549032382304	56
+75	341	16.549032382304	56
+75	362	18.549032382304	56
+81	0	0	0
+81	0	0	0
+81	0	0	0
+81	0	0	0
+81	0	0	0
+81	6	0.548813502304	0
+81	20	0.549025022304	0
+81	77	2.548813502304	0
+81	119	4.548813502304	0
+81	140	6.548813502304	0
+81	182	8.548813502304	0
+81	224	10.548813502304	0
+81	245	12.548813502304	0
+81	287	14.548813502304	0
+81	329	16.548813502304	0
+81	350	18.548813502304	0
+82	0	0	0
+82	0	0	0
+82	0	0	0
+82	0	0	0
+82	0	0	0
+82	6	0.548813502304	0
+82	20	0.549025022304	0
+82	77	2.548813502304	0
+82	119	4.548813502304	0
+82	140	6.548813502304	0
+82	182	8.548813502304	0
+82	224	10.548813502304	0
+82	245	12.548813502304	0
+82	287	14.548813502304	0
+82	329	16.548813502304	0
+82	350	18.548813502304	0
+83	6	0.548813502304	0
+83	20	0.549025022304	0
+83	77	2.548813502304	0
+83	119	4.548813502304	0
+83	140	6.548813502304	0
+83	182	8.548813502304	0
+83	224	10.548813502304	0
+83	245	12.548813502304	0
+83	287	14.548813502304	0
+83	329	16.548813502304	0
+83	350	18.548813502304	0
+84	6	0.548813502304	368
+84	20	0.549025022304	1168
+84	77	2.548813502304	1168
+84	119	4.548813502304	1168
+84	140	6.548813502304	1168
+84	182	8.548813502304	1168
+84	224	10.548813502304	1168
+84	245	12.548813502304	1168
+84	287	14.548813502304	1168
+84	329	16.548813502304	1168
+84	350	18.548813502304	1168
+85	6	0.1	0
+85	6	0.2	0
+85	6	0.3	0
+85	6	0.4	0
+85	6	0.5	0
+85	77	0.6	15360
+85	77	0.7	0
+85	77	0.8	0
+85	77	0.9	0
+85	77	1	0
+85	77	1.1	0
+85	77	1.2	0
+85	77	1.3	0
+85	77	1.4	0
+85	77	1.5	0
+85	77	1.6	0
+85	77	1.7	0
+85	77	1.8	0
+85	77	1.9	0
+85	77	2	0
+85	77	2.1	0
+85	77	2.2	0
+85	77	2.3	0
+85	77	2.4	0
+85	77	2.5	0
+85	119	2.6	11680
+85	119	2.7	0
+85	119	2.8	0
+85	119	2.9	0
+85	119	3	0
+85	119	3.1	0
+85	119	3.2	0
+85	119	3.3	0
+85	119	3.4	0
+85	119	3.5	0
+85	119	3.6	0
+85	119	3.7	0
+85	119	3.8	0
+85	119	3.9	0
+85	119	4	0
+85	119	4.1	0
+85	119	4.2	0
+85	119	4.3	0
+85	119	4.4	0
+85	119	4.5	0
+85	140	4.6	11680
+85	140	4.7	0
+85	140	4.8	0
+85	140	4.9	0
+85	140	5	0
+85	140	5.1	0
+85	140	5.2	0
+85	140	5.3	0
+85	140	5.4	0
+85	140	5.5	0
+85	140	5.6	0
+85	140	5.7	0
+85	140	5.8	0
+85	140	5.9	0
+85	140	6	0
+85	140	6.1	0
+85	140	6.2	0
+85	140	6.3	0
+85	140	6.4	0
+85	140	6.5	0
+85	182	6.6	11680
+85	182	6.7	0
+85	182	6.8	0
+85	182	6.9	0
+85	182	7	0
+85	182	7.1	0
+85	182	7.2	0
+85	182	7.3	0
+85	182	7.4	0
+85	182	7.5	0
+85	182	7.6	0
+85	182	7.7	0
+85	182	7.8	0
+85	182	7.9	0
+85	182	8	0
+85	182	8.1	0
+85	182	8.2	0
+85	182	8.3	0
+85	182	8.4	0
+85	182	8.5	0
+85	224	8.6	11680
+85	224	8.7	0
+85	224	8.8	0
+85	224	8.9	0
+85	224	9	0
+85	224	9.1	0
+85	224	9.2	0
+85	224	9.3	0
+85	224	9.4	0
+85	224	9.5	0
+85	224	9.6	0
+85	224	9.7	0
+85	224	9.8	0
+85	224	9.9	0
+85	224	10	0
+85	224	10.1	0
+85	224	10.2	0
+85	224	10.3	0
+85	224	10.4	0
+85	224	10.5	0
+85	245	10.6	11680
+85	245	10.7	0
+85	245	10.8	0
+85	245	10.9	0
+85	245	11	0
+85	245	11.1	0
+85	245	11.2	0
+85	245	11.3	0
+85	245	11.4	0
+85	245	11.5	0
+85	245	11.6	0
+85	245	11.7	0
+85	245	11.8	0
+85	245	11.9	0
+85	245	12	0
+85	245	12.1	0
+85	245	12.2	0
+85	245	12.3	0
+85	245	12.4	0
+85	245	12.5	0
+85	287	12.6	11680
+85	287	12.7	0
+85	287	12.8	0
+85	287	12.9	0
+85	287	13	0
+85	287	13.1	0
+85	287	13.2	0
+85	287	13.3	0
+85	287	13.4	0
+85	287	13.5	0
+85	287	13.6	0
+85	287	13.7	0
+85	287	13.8	0
+85	287	13.9	0
+85	287	14	0
+85	287	14.1	0
+85	287	14.2	0
+85	287	14.3	0
+85	287	14.4	0
+85	287	14.5	0
+85	329	14.6	11680
+85	329	14.7	0
+85	329	14.8	0
+85	329	14.9	0
+85	329	15	0
+85	329	15.1	0
+85	329	15.2	0
+85	329	15.3	0
+85	329	15.4	0
+85	329	15.5	0
+85	329	15.6	0
+85	329	15.7	0
+85	329	15.8	0
+85	329	15.9	0
+85	329	16	0
+85	329	16.1	0
+85	329	16.2	0
+85	329	16.3	0
+85	329	16.4	0
+85	329	16.5	0
+85	350	16.6	11680
+85	350	16.7	0
+85	350	16.8	0
+85	350	16.9	0
+85	350	17	0
+85	350	17.1	0
+85	350	17.2	0
+85	350	17.3	0
+85	350	17.4	0
+85	350	17.5	0
+85	350	17.6	0
+85	350	17.7	0
+85	350	17.8	0
+85	350	17.9	0
+85	350	18	0
+85	350	18.1	0
+85	350	18.2	0
+85	350	18.3	0
+85	350	18.4	0
+85	350	18.5	0
+85	394	18.6	11680
+85	394	18.7	0
+85	394	18.8	0
+85	394	18.9	0
+85	394	19	0
+85	394	19.1	0
+85	394	19.2	0
+85	394	19.3	0
+85	394	19.4	0
+85	394	19.5	0
+85	394	19.6	0
+85	394	19.7	0
+85	394	19.8	0
+85	394	19.9	0
+85	394	20	0
+86	6	0.548813502304	368
+86	20	0.549025022304	1168
+86	77	2.548813502304	1168
+86	119	4.548813502304	1168
+86	140	6.548813502304	1168
+86	182	8.548813502304	1168
+86	224	10.548813502304	1168
+86	245	12.548813502304	1168
+86	287	14.548813502304	1168
+86	329	16.548813502304	1168
+86	350	18.548813502304	1168
+87	6	0.1	0
+87	6	0.2	0
+87	6	0.3	0
+87	6	0.4	0
+87	6	0.5	0
+87	77	0.6	15360
+87	77	0.7	0
+87	77	0.8	0
+87	77	0.9	0
+87	77	1	0
+87	77	1.1	0
+87	77	1.2	0
+87	77	1.3	0
+87	77	1.4	0
+87	77	1.5	0
+87	77	1.6	0
+87	77	1.7	0
+87	77	1.8	0
+87	77	1.9	0
+87	77	2	0
+87	77	2.1	0
+87	77	2.2	0
+87	77	2.3	0
+87	77	2.4	0
+87	77	2.5	0
+87	119	2.6	11680
+87	119	2.7	0
+87	119	2.8	0
+87	119	2.9	0
+87	119	3	0
+87	119	3.1	0
+87	119	3.2	0
+87	119	3.3	0
+87	119	3.4	0
+87	119	3.5	0
+87	119	3.6	0
+87	119	3.7	0
+87	119	3.8	0
+87	119	3.9	0
+87	119	4	0
+87	119	4.1	0
+87	119	4.2	0
+87	119	4.3	0
+87	119	4.4	0
+87	119	4.5	0
+87	140	4.6	11680
+87	140	4.7	0
+87	140	4.8	0
+87	140	4.9	0
+87	140	5	0
+87	140	5.1	0
+87	140	5.2	0
+87	140	5.3	0
+87	140	5.4	0
+87	140	5.5	0
+87	140	5.6	0
+87	140	5.7	0
+87	140	5.8	0
+87	140	5.9	0
+87	140	6	0
+87	140	6.1	0
+87	140	6.2	0
+87	140	6.3	0
+87	140	6.4	0
+87	140	6.5	0
+87	182	6.6	11680
+87	182	6.7	0
+87	182	6.8	0
+87	182	6.9	0
+87	182	7	0
+87	182	7.1	0
+87	182	7.2	0
+87	182	7.3	0
+87	182	7.4	0
+87	182	7.5	0
+87	182	7.6	0
+87	182	7.7	0
+87	182	7.8	0
+87	182	7.9	0
+87	182	8	0
+87	182	8.1	0
+87	182	8.2	0
+87	182	8.3	0
+87	182	8.4	0
+87	182	8.5	0
+87	224	8.6	11680
+87	224	8.7	0
+87	224	8.8	0
+87	224	8.9	0
+87	224	9	0
+87	224	9.1	0
+87	224	9.2	0
+87	224	9.3	0
+87	224	9.4	0
+87	224	9.5	0
+87	224	9.6	0
+87	224	9.7	0
+87	224	9.8	0
+87	224	9.9	0
+87	224	10	0
+87	224	10.1	0
+87	224	10.2	0
+87	224	10.3	0
+87	224	10.4	0
+87	224	10.5	0
+87	245	10.6	11680
+87	245	10.7	0
+87	245	10.8	0
+87	245	10.9	0
+87	245	11	0
+87	245	11.1	0
+87	245	11.2	0
+87	245	11.3	0
+87	245	11.4	0
+87	245	11.5	0
+87	245	11.6	0
+87	245	11.7	0
+87	245	11.8	0
+87	245	11.9	0
+87	245	12	0
+87	245	12.1	0
+87	245	12.2	0
+87	245	12.3	0
+87	245	12.4	0
+87	245	12.5	0
+87	287	12.6	11680
+87	287	12.7	0
+87	287	12.8	0
+87	287	12.9	0
+87	287	13	0
+87	287	13.1	0
+87	287	13.2	0
+87	287	13.3	0
+87	287	13.4	0
+87	287	13.5	0
+87	287	13.6	0
+87	287	13.7	0
+87	287	13.8	0
+87	287	13.9	0
+87	287	14	0
+87	287	14.1	0
+87	287	14.2	0
+87	287	14.3	0
+87	287	14.4	0
+87	287	14.5	0
+87	329	14.6	11680
+87	329	14.7	0
+87	329	14.8	0
+87	329	14.9	0
+87	329	15	0
+87	329	15.1	0
+87	329	15.2	0
+87	329	15.3	0
+87	329	15.4	0
+87	329	15.5	0
+87	329	15.6	0
+87	329	15.7	0
+87	329	15.8	0
+87	329	15.9	0
+87	329	16	0
+87	329	16.1	0
+87	329	16.2	0
+87	329	16.3	0
+87	329	16.4	0
+87	329	16.5	0
+87	350	16.6	11680
+87	350	16.7	0
+87	350	16.8	0
+87	350	16.9	0
+87	350	17	0
+87	350	17.1	0
+87	350	17.2	0
+87	350	17.3	0
+87	350	17.4	0
+87	350	17.5	0
+87	350	17.6	0
+87	350	17.7	0
+87	350	17.8	0
+87	350	17.9	0
+87	350	18	0
+87	350	18.1	0
+87	350	18.2	0
+87	350	18.3	0
+87	350	18.4	0
+87	350	18.5	0
+87	394	18.6	11680
+87	394	18.7	0
+87	394	18.8	0
+87	394	18.9	0
+87	394	19	0
+87	394	19.1	0
+87	394	19.2	0
+87	394	19.3	0
+87	394	19.4	0
+87	394	19.5	0
+87	394	19.6	0
+87	394	19.7	0
+87	394	19.8	0
+87	394	19.9	0
+87	394	20	0
+92	7	0.548819262304	64
+92	21	0.549037342304	146
+92	78	2.548825822304	146
+92	120	4.548825822304	146
+92	141	6.548825822304	146
+92	183	8.548825822304	146
+92	225	10.548825822304	146
+92	246	12.548825822304	146
+92	288	14.548825822304	146
+92	330	16.548825822304	146
+92	351	18.548825822304	146
+93	16	0.549025022304	64
+93	31	0.549243902304	74
+93	88	2.549032382304	74
+93	130	4.549032382304	74
+93	151	6.549032382304	74
+93	193	8.549032382304	74
+93	235	10.549032382304	74
+93	256	12.549032382304	74
+93	298	14.549032382304	74
+93	340	16.549032382304	74
+93	361	18.549032382304	74
+94	16	0.549025022304	64
+94	31	0.549243902304	74
+94	88	2.549032382304	74
+94	130	4.549032382304	74
+94	151	6.549032382304	74
+94	193	8.549032382304	74
+94	235	10.549032382304	74
+94	256	12.549032382304	74
+94	298	14.549032382304	74
+94	340	16.549032382304	74
+94	361	18.549032382304	74
+97	6	0.548813502304	46
+97	20	0.549025022304	146
+97	77	2.548813502304	146
+97	119	4.548813502304	146
+97	140	6.548813502304	146
+97	182	8.548813502304	146
+97	224	10.548813502304	146
+97	245	12.548813502304	146
+97	287	14.548813502304	146
+97	329	16.548813502304	146
+97	350	18.548813502304	146
+109	4	0.548813502304	28
+111	3	0.548813502304	108
+111	74	2.548813502304	108
+111	116	4.548813502304	108
+111	137	6.548813502304	108
+111	179	8.548813502304	108
+111	221	10.548813502304	108
+111	242	12.548813502304	108
+111	284	14.548813502304	108
+111	326	16.548813502304	108
+111	347	18.548813502304	108
+113	0	0	0
+114	0	0	0
+115	0	0	0
+117	394	0.1	0
+117	394	0.2	0
+117	394	0.3	0
+117	394	0.4	0
+117	394	0.5	0
+117	394	0.6	0
+117	394	0.7	0
+117	394	0.8	0
+117	394	0.9	0
+117	394	1	0
+117	394	1.1	0
+117	394	1.2	0
+117	394	1.3	0
+117	394	1.4	0
+117	394	1.5	0
+117	394	1.6	0
+117	394	1.7	0
+117	394	1.8	0
+117	394	1.9	0
+117	394	2	0
+117	394	2.1	0
+117	394	2.2	0
+117	394	2.3	0
+117	394	2.4	0
+117	394	2.5	0
+117	394	2.6	0
+117	394	2.7	0
+117	394	2.8	0
+117	394	2.9	0
+117	394	3	0
+117	394	3.1	0
+117	394	3.2	0
+117	394	3.3	0
+117	394	3.4	0
+117	394	3.5	0
+117	394	3.6	0
+117	394	3.7	0
+117	394	3.8	0
+117	394	3.9	0
+117	394	4	0
+117	394	4.1	0
+117	394	4.2	0
+117	394	4.3	0
+117	394	4.4	0
+117	394	4.5	0
+117	394	4.6	0
+117	394	4.7	0
+117	394	4.8	0
+117	394	4.9	0
+117	394	5	0
+117	394	5.1	0
+117	394	5.2	0
+117	394	5.3	0
+117	394	5.4	0
+117	394	5.5	0
+117	394	5.6	0
+117	394	5.7	0
+117	394	5.8	0
+117	394	5.9	0
+117	394	6	0
+117	394	6.1	0
+117	394	6.2	0
+117	394	6.3	0
+117	394	6.4	0
+117	394	6.5	0
+117	394	6.6	0
+117	394	6.7	0
+117	394	6.8	0
+117	394	6.9	0
+117	394	7	0
+117	394	7.1	0
+117	394	7.2	0
+117	394	7.3	0
+117	394	7.4	0
+117	394	7.5	0
+117	394	7.6	0
+117	394	7.7	0
+117	394	7.8	0
+117	394	7.9	0
+117	394	8	0
+117	394	8.1	0
+117	394	8.2	0
+117	394	8.3	0
+117	394	8.4	0
+117	394	8.5	0
+117	394	8.6	0
+117	394	8.7	0
+117	394	8.8	0
+117	394	8.9	0
+117	394	9	0
+117	394	9.1	0
+117	394	9.2	0
+117	394	9.3	0
+117	394	9.4	0
+117	394	9.5	0
+117	394	9.6	0
+117	394	9.7	0
+117	394	9.8	0
+117	394	9.9	0
+117	394	10	0
+117	394	10.1	0
+117	394	10.2	0
+117	394	10.3	0
+117	394	10.4	0
+117	394	10.5	0
+117	394	10.6	0
+117	394	10.7	0
+117	394	10.8	0
+117	394	10.9	0
+117	394	11	0
+117	394	11.1	0
+117	394	11.2	0
+117	394	11.3	0
+117	394	11.4	0
+117	394	11.5	0
+117	394	11.6	0
+117	394	11.7	0
+117	394	11.8	0
+117	394	11.9	0
+117	394	12	0
+117	394	12.1	0
+117	394	12.2	0
+117	394	12.3	0
+117	394	12.4	0
+117	394	12.5	0
+117	394	12.6	0
+117	394	12.7	0
+117	394	12.8	0
+117	394	12.9	0
+117	394	13	0
+117	394	13.1	0
+117	394	13.2	0
+117	394	13.3	0
+117	394	13.4	0
+117	394	13.5	0
+117	394	13.6	0
+117	394	13.7	0
+117	394	13.8	0
+117	394	13.9	0
+117	394	14	0
+117	394	14.1	0
+117	394	14.2	0
+117	394	14.3	0
+117	394	14.4	0
+117	394	14.5	0
+117	394	14.6	0
+117	394	14.7	0
+117	394	14.8	0
+117	394	14.9	0
+117	394	15	0
+117	394	15.1	0
+117	394	15.2	0
+117	394	15.3	0
+117	394	15.4	0
+117	394	15.5	0
+117	394	15.6	0
+117	394	15.7	0
+117	394	15.8	0
+117	394	15.9	0
+117	394	16	0
+117	394	16.1	0
+117	394	16.2	0
+117	394	16.3	0
+117	394	16.4	0
+117	394	16.5	0
+117	394	16.6	0
+117	394	16.7	0
+117	394	16.8	0
+117	394	16.9	0
+117	394	17	0
+117	394	17.1	0
+117	394	17.2	0
+117	394	17.3	0
+117	394	17.4	0
+117	394	17.5	0
+117	394	17.6	0
+117	394	17.7	0
+117	394	17.8	0
+117	394	17.9	0
+117	394	18	0
+117	394	18.1	0
+117	394	18.2	0
+117	394	18.3	0
+117	394	18.4	0
+117	394	18.5	0
+117	394	18.6	0
+117	394	18.7	0
+117	394	18.8	0
+117	394	18.9	0
+117	394	19	0
+117	394	19.1	0
+117	394	19.2	0
+117	394	19.3	0
+117	394	19.4	0
+117	394	19.5	0
+117	394	19.6	0
+117	394	19.7	0
+117	394	19.8	0
+117	394	19.9	0
+117	394	20	0
+118	1	0.548813502304	100
+118	73	2.548813502304	100
+118	115	4.548813502304	100
+118	136	6.548813502304	100
+118	178	8.548813502304	100
+118	220	10.548813502304	100
+118	241	12.548813502304	100
+118	283	14.548813502304	100
+118	325	16.548813502304	100
+118	346	18.548813502304	100
+121	41	0.592844616389	28
+121	55	0.593056136389	228
+121	97	3.592844616389	228
+121	160	6.592844616389	228
+121	202	9.592844616389	228
+121	265	12.592844616389	228
+121	307	15.592844616389	228
+121	370	18.592844616389	228
+122	53	0.593056136389	46
+122	68	0.593283016389	56
+122	110	3.593071496389	56
+122	173	6.593071496389	56
+122	215	9.593071496389	56
+122	278	12.593071496389	56
+122	320	15.593071496389	56
+122	383	18.593071496389	56
+128	0	0	0
+128	0	0	0
+128	0	0	0
+128	0	0	0
+128	0	0	0
+128	42	0.592844616389	0
+128	56	0.593056136389	0
+128	98	3.592844616389	0
+128	161	6.592844616389	0
+128	203	9.592844616389	0
+128	266	12.592844616389	0
+128	308	15.592844616389	0
+128	371	18.592844616389	0
+129	0	0	0
+129	0	0	0
+129	0	0	0
+129	0	0	0
+129	0	0	0
+129	42	0.592844616389	0
+129	56	0.593056136389	0
+129	98	3.592844616389	0
+129	161	6.592844616389	0
+129	203	9.592844616389	0
+129	266	12.592844616389	0
+129	308	15.592844616389	0
+129	371	18.592844616389	0
+130	42	0.592844616389	0
+130	56	0.593056136389	0
+130	98	3.592844616389	0
+130	161	6.592844616389	0
+130	203	9.592844616389	0
+130	266	12.592844616389	0
+130	308	15.592844616389	0
+130	371	18.592844616389	0
+131	42	0.592844616389	368
+131	56	0.593056136389	1968
+131	98	3.592844616389	1968
+131	161	6.592844616389	1968
+131	203	9.592844616389	1968
+131	266	12.592844616389	1968
+131	308	15.592844616389	1968
+131	371	18.592844616389	1968
+132	42	0.1	0
+132	42	0.2	0
+132	42	0.3	0
+132	42	0.4	0
+132	42	0.5	0
+132	98	0.6	23360
+132	98	0.7	0
+132	98	0.8	0
+132	98	0.9	0
+132	98	1	0
+132	98	1.1	0
+132	98	1.2	0
+132	98	1.3	0
+132	98	1.4	0
+132	98	1.5	0
+132	98	1.6	0
+132	98	1.7	0
+132	98	1.8	0
+132	98	1.9	0
+132	98	2	0
+132	98	2.1	0
+132	98	2.2	0
+132	98	2.3	0
+132	98	2.4	0
+132	98	2.5	0
+132	98	2.6	0
+132	98	2.7	0
+132	98	2.8	0
+132	98	2.9	0
+132	98	3	0
+132	98	3.1	0
+132	98	3.2	0
+132	98	3.3	0
+132	98	3.4	0
+132	98	3.5	0
+132	161	3.6	19680
+132	161	3.7	0
+132	161	3.8	0
+132	161	3.9	0
+132	161	4	0
+132	161	4.1	0
+132	161	4.2	0
+132	161	4.3	0
+132	161	4.4	0
+132	161	4.5	0
+132	161	4.6	0
+132	161	4.7	0
+132	161	4.8	0
+132	161	4.9	0
+132	161	5	0
+132	161	5.1	0
+132	161	5.2	0
+132	161	5.3	0
+132	161	5.4	0
+132	161	5.5	0
+132	161	5.6	0
+132	161	5.7	0
+132	161	5.8	0
+132	161	5.9	0
+132	161	6	0
+132	161	6.1	0
+132	161	6.2	0
+132	161	6.3	0
+132	161	6.4	0
+132	161	6.5	0
+132	203	6.6	19680
+132	203	6.7	0
+132	203	6.8	0
+132	203	6.9	0
+132	203	7	0
+132	203	7.1	0
+132	203	7.2	0
+132	203	7.3	0
+132	203	7.4	0
+132	203	7.5	0
+132	203	7.6	0
+132	203	7.7	0
+132	203	7.8	0
+132	203	7.9	0
+132	203	8	0
+132	203	8.1	0
+132	203	8.2	0
+132	203	8.3	0
+132	203	8.4	0
+132	203	8.5	0
+132	203	8.6	0
+132	203	8.7	0
+132	203	8.8	0
+132	203	8.9	0
+132	203	9	0
+132	203	9.1	0
+132	203	9.2	0
+132	203	9.3	0
+132	203	9.4	0
+132	203	9.5	0
+132	266	9.6	19680
+132	266	9.7	0
+132	266	9.8	0
+132	266	9.9	0
+132	266	10	0
+132	266	10.1	0
+132	266	10.2	0
+132	266	10.3	0
+132	266	10.4	0
+132	266	10.5	0
+132	266	10.6	0
+132	266	10.7	0
+132	266	10.8	0
+132	266	10.9	0
+132	266	11	0
+132	266	11.1	0
+132	266	11.2	0
+132	266	11.3	0
+132	266	11.4	0
+132	266	11.5	0
+132	266	11.6	0
+132	266	11.7	0
+132	266	11.8	0
+132	266	11.9	0
+132	266	12	0
+132	266	12.1	0
+132	266	12.2	0
+132	266	12.3	0
+132	266	12.4	0
+132	266	12.5	0
+132	308	12.6	19680
+132	308	12.7	0
+132	308	12.8	0
+132	308	12.9	0
+132	308	13	0
+132	308	13.1	0
+132	308	13.2	0
+132	308	13.3	0
+132	308	13.4	0
+132	308	13.5	0
+132	308	13.6	0
+132	308	13.7	0
+132	308	13.8	0
+132	308	13.9	0
+132	308	14	0
+132	308	14.1	0
+132	308	14.2	0
+132	308	14.3	0
+132	308	14.4	0
+132	308	14.5	0
+132	308	14.6	0
+132	308	14.7	0
+132	308	14.8	0
+132	308	14.9	0
+132	308	15	0
+132	308	15.1	0
+132	308	15.2	0
+132	308	15.3	0
+132	308	15.4	0
+132	308	15.5	0
+132	371	15.6	19680
+132	371	15.7	0
+132	371	15.8	0
+132	371	15.9	0
+132	371	16	0
+132	371	16.1	0
+132	371	16.2	0
+132	371	16.3	0
+132	371	16.4	0
+132	371	16.5	0
+132	371	16.6	0
+132	371	16.7	0
+132	371	16.8	0
+132	371	16.9	0
+132	371	17	0
+132	371	17.1	0
+132	371	17.2	0
+132	371	17.3	0
+132	371	17.4	0
+132	371	17.5	0
+132	371	17.6	0
+132	371	17.7	0
+132	371	17.8	0
+132	371	17.9	0
+132	371	18	0
+132	371	18.1	0
+132	371	18.2	0
+132	371	18.3	0
+132	371	18.4	0
+132	371	18.5	0
+132	394	18.6	19680
+132	394	18.7	0
+132	394	18.8	0
+132	394	18.9	0
+132	394	19	0
+132	394	19.1	0
+132	394	19.2	0
+132	394	19.3	0
+132	394	19.4	0
+132	394	19.5	0
+132	394	19.6	0
+132	394	19.7	0
+132	394	19.8	0
+132	394	19.9	0
+132	394	20	0
+133	42	0.592844616389	368
+133	56	0.593056136389	1968
+133	98	3.592844616389	1968
+133	161	6.592844616389	1968
+133	203	9.592844616389	1968
+133	266	12.592844616389	1968
+133	308	15.592844616389	1968
+133	371	18.592844616389	1968
+134	42	0.1	0
+134	42	0.2	0
+134	42	0.3	0
+134	42	0.4	0
+134	42	0.5	0
+134	98	0.6	23360
+134	98	0.7	0
+134	98	0.8	0
+134	98	0.9	0
+134	98	1	0
+134	98	1.1	0
+134	98	1.2	0
+134	98	1.3	0
+134	98	1.4	0
+134	98	1.5	0
+134	98	1.6	0
+134	98	1.7	0
+134	98	1.8	0
+134	98	1.9	0
+134	98	2	0
+134	98	2.1	0
+134	98	2.2	0
+134	98	2.3	0
+134	98	2.4	0
+134	98	2.5	0
+134	98	2.6	0
+134	98	2.7	0
+134	98	2.8	0
+134	98	2.9	0
+134	98	3	0
+134	98	3.1	0
+134	98	3.2	0
+134	98	3.3	0
+134	98	3.4	0
+134	98	3.5	0
+134	161	3.6	19680
+134	161	3.7	0
+134	161	3.8	0
+134	161	3.9	0
+134	161	4	0
+134	161	4.1	0
+134	161	4.2	0
+134	161	4.3	0
+134	161	4.4	0
+134	161	4.5	0
+134	161	4.6	0
+134	161	4.7	0
+134	161	4.8	0
+134	161	4.9	0
+134	161	5	0
+134	161	5.1	0
+134	161	5.2	0
+134	161	5.3	0
+134	161	5.4	0
+134	161	5.5	0
+134	161	5.6	0
+134	161	5.7	0
+134	161	5.8	0
+134	161	5.9	0
+134	161	6	0
+134	161	6.1	0
+134	161	6.2	0
+134	161	6.3	0
+134	161	6.4	0
+134	161	6.5	0
+134	203	6.6	19680
+134	203	6.7	0
+134	203	6.8	0
+134	203	6.9	0
+134	203	7	0
+134	203	7.1	0
+134	203	7.2	0
+134	203	7.3	0
+134	203	7.4	0
+134	203	7.5	0
+134	203	7.6	0
+134	203	7.7	0
+134	203	7.8	0
+134	203	7.9	0
+134	203	8	0
+134	203	8.1	0
+134	203	8.2	0
+134	203	8.3	0
+134	203	8.4	0
+134	203	8.5	0
+134	203	8.6	0
+134	203	8.7	0
+134	203	8.8	0
+134	203	8.9	0
+134	203	9	0
+134	203	9.1	0
+134	203	9.2	0
+134	203	9.3	0
+134	203	9.4	0
+134	203	9.5	0
+134	266	9.6	19680
+134	266	9.7	0
+134	266	9.8	0
+134	266	9.9	0
+134	266	10	0
+134	266	10.1	0
+134	266	10.2	0
+134	266	10.3	0
+134	266	10.4	0
+134	266	10.5	0
+134	266	10.6	0
+134	266	10.7	0
+134	266	10.8	0
+134	266	10.9	0
+134	266	11	0
+134	266	11.1	0
+134	266	11.2	0
+134	266	11.3	0
+134	266	11.4	0
+134	266	11.5	0
+134	266	11.6	0
+134	266	11.7	0
+134	266	11.8	0
+134	266	11.9	0
+134	266	12	0
+134	266	12.1	0
+134	266	12.2	0
+134	266	12.3	0
+134	266	12.4	0
+134	266	12.5	0
+134	308	12.6	19680
+134	308	12.7	0
+134	308	12.8	0
+134	308	12.9	0
+134	308	13	0
+134	308	13.1	0
+134	308	13.2	0
+134	308	13.3	0
+134	308	13.4	0
+134	308	13.5	0
+134	308	13.6	0
+134	308	13.7	0
+134	308	13.8	0
+134	308	13.9	0
+134	308	14	0
+134	308	14.1	0
+134	308	14.2	0
+134	308	14.3	0
+134	308	14.4	0
+134	308	14.5	0
+134	308	14.6	0
+134	308	14.7	0
+134	308	14.8	0
+134	308	14.9	0
+134	308	15	0
+134	308	15.1	0
+134	308	15.2	0
+134	308	15.3	0
+134	308	15.4	0
+134	308	15.5	0
+134	371	15.6	19680
+134	371	15.7	0
+134	371	15.8	0
+134	371	15.9	0
+134	371	16	0
+134	371	16.1	0
+134	371	16.2	0
+134	371	16.3	0
+134	371	16.4	0
+134	371	16.5	0
+134	371	16.6	0
+134	371	16.7	0
+134	371	16.8	0
+134	371	16.9	0
+134	371	17	0
+134	371	17.1	0
+134	371	17.2	0
+134	371	17.3	0
+134	371	17.4	0
+134	371	17.5	0
+134	371	17.6	0
+134	371	17.7	0
+134	371	17.8	0
+134	371	17.9	0
+134	371	18	0
+134	371	18.1	0
+134	371	18.2	0
+134	371	18.3	0
+134	371	18.4	0
+134	371	18.5	0
+134	394	18.6	19680
+134	394	18.7	0
+134	394	18.8	0
+134	394	18.9	0
+134	394	19	0
+134	394	19.1	0
+134	394	19.2	0
+134	394	19.3	0
+134	394	19.4	0
+134	394	19.5	0
+134	394	19.6	0
+134	394	19.7	0
+134	394	19.8	0
+134	394	19.9	0
+134	394	20	0
+139	43	0.592850376389	64
+139	57	0.593076456389	246
+139	99	3.592864936389	246
+139	162	6.592864936389	246
+139	204	9.592864936389	246
+139	267	12.592864936389	246
+139	309	15.592864936389	246
+139	372	18.592864936389	246
+140	52	0.593056136389	64
+140	67	0.593283016389	74
+140	109	3.593071496389	74
+140	172	6.593071496389	74
+140	214	9.593071496389	74
+140	277	12.593071496389	74
+140	319	15.593071496389	74
+140	382	18.593071496389	74
+141	52	0.593056136389	64
+141	67	0.593283016389	74
+141	109	3.593071496389	74
+141	172	6.593071496389	74
+141	214	9.593071496389	74
+141	277	12.593071496389	74
+141	319	15.593071496389	74
+141	382	18.593071496389	74
+144	42	0.592844616389	46
+144	56	0.593056136389	246
+144	98	3.592844616389	246
+144	161	6.592844616389	246
+144	203	9.592844616389	246
+144	266	12.592844616389	246
+144	308	15.592844616389	246
+144	371	18.592844616389	246
+156	40	0.592844616389	28
+158	39	0.592844616389	208
+158	95	3.592844616389	208
+158	158	6.592844616389	208
+158	200	9.592844616389	208
+158	263	12.592844616389	208
+158	305	15.592844616389	208
+158	368	18.592844616389	208
+160	0	0	0
+161	0	0	0
+162	0	0	0
+164	394	0.1	0
+164	394	0.2	0
+164	394	0.3	0
+164	394	0.4	0
+164	394	0.5	0
+164	394	0.6	0
+164	394	0.7	0
+164	394	0.8	0
+164	394	0.9	0
+164	394	1	0
+164	394	1.1	0
+164	394	1.2	0
+164	394	1.3	0
+164	394	1.4	0
+164	394	1.5	0
+164	394	1.6	0
+164	394	1.7	0
+164	394	1.8	0
+164	394	1.9	0
+164	394	2	0
+164	394	2.1	0
+164	394	2.2	0
+164	394	2.3	0
+164	394	2.4	0
+164	394	2.5	0
+164	394	2.6	0
+164	394	2.7	0
+164	394	2.8	0
+164	394	2.9	0
+164	394	3	0
+164	394	3.1	0
+164	394	3.2	0
+164	394	3.3	0
+164	394	3.4	0
+164	394	3.5	0
+164	394	3.6	0
+164	394	3.7	0
+164	394	3.8	0
+164	394	3.9	0
+164	394	4	0
+164	394	4.1	0
+164	394	4.2	0
+164	394	4.3	0
+164	394	4.4	0
+164	394	4.5	0
+164	394	4.6	0
+164	394	4.7	0
+164	394	4.8	0
+164	394	4.9	0
+164	394	5	0
+164	394	5.1	0
+164	394	5.2	0
+164	394	5.3	0
+164	394	5.4	0
+164	394	5.5	0
+164	394	5.6	0
+164	394	5.7	0
+164	394	5.8	0
+164	394	5.9	0
+164	394	6	0
+164	394	6.1	0
+164	394	6.2	0
+164	394	6.3	0
+164	394	6.4	0
+164	394	6.5	0
+164	394	6.6	0
+164	394	6.7	0
+164	394	6.8	0
+164	394	6.9	0
+164	394	7	0
+164	394	7.1	0
+164	394	7.2	0
+164	394	7.3	0
+164	394	7.4	0
+164	394	7.5	0
+164	394	7.6	0
+164	394	7.7	0
+164	394	7.8	0
+164	394	7.9	0
+164	394	8	0
+164	394	8.1	0
+164	394	8.2	0
+164	394	8.3	0
+164	394	8.4	0
+164	394	8.5	0
+164	394	8.6	0
+164	394	8.7	0
+164	394	8.8	0
+164	394	8.9	0
+164	394	9	0
+164	394	9.1	0
+164	394	9.2	0
+164	394	9.3	0
+164	394	9.4	0
+164	394	9.5	0
+164	394	9.6	0
+164	394	9.7	0
+164	394	9.8	0
+164	394	9.9	0
+164	394	10	0
+164	394	10.1	0
+164	394	10.2	0
+164	394	10.3	0
+164	394	10.4	0
+164	394	10.5	0
+164	394	10.6	0
+164	394	10.7	0
+164	394	10.8	0
+164	394	10.9	0
+164	394	11	0
+164	394	11.1	0
+164	394	11.2	0
+164	394	11.3	0
+164	394	11.4	0
+164	394	11.5	0
+164	394	11.6	0
+164	394	11.7	0
+164	394	11.8	0
+164	394	11.9	0
+164	394	12	0
+164	394	12.1	0
+164	394	12.2	0
+164	394	12.3	0
+164	394	12.4	0
+164	394	12.5	0
+164	394	12.6	0
+164	394	12.7	0
+164	394	12.8	0
+164	394	12.9	0
+164	394	13	0
+164	394	13.1	0
+164	394	13.2	0
+164	394	13.3	0
+164	394	13.4	0
+164	394	13.5	0
+164	394	13.6	0
+164	394	13.7	0
+164	394	13.8	0
+164	394	13.9	0
+164	394	14	0
+164	394	14.1	0
+164	394	14.2	0
+164	394	14.3	0
+164	394	14.4	0
+164	394	14.5	0
+164	394	14.6	0
+164	394	14.7	0
+164	394	14.8	0
+164	394	14.9	0
+164	394	15	0
+164	394	15.1	0
+164	394	15.2	0
+164	394	15.3	0
+164	394	15.4	0
+164	394	15.5	0
+164	394	15.6	0
+164	394	15.7	0
+164	394	15.8	0
+164	394	15.9	0
+164	394	16	0
+164	394	16.1	0
+164	394	16.2	0
+164	394	16.3	0
+164	394	16.4	0
+164	394	16.5	0
+164	394	16.6	0
+164	394	16.7	0
+164	394	16.8	0
+164	394	16.9	0
+164	394	17	0
+164	394	17.1	0
+164	394	17.2	0
+164	394	17.3	0
+164	394	17.4	0
+164	394	17.5	0
+164	394	17.6	0
+164	394	17.7	0
+164	394	17.8	0
+164	394	17.9	0
+164	394	18	0
+164	394	18.1	0
+164	394	18.2	0
+164	394	18.3	0
+164	394	18.4	0
+164	394	18.5	0
+164	394	18.6	0
+164	394	18.7	0
+164	394	18.8	0
+164	394	18.9	0
+164	394	19	0
+164	394	19.1	0
+164	394	19.2	0
+164	394	19.3	0
+164	394	19.4	0
+164	394	19.5	0
+164	394	19.6	0
+164	394	19.7	0
+164	394	19.8	0
+164	394	19.9	0
+164	394	20	0
+165	37	0.592844616389	200
+165	94	3.592844616389	200
+165	157	6.592844616389	200
+165	199	9.592844616389	200
+165	262	12.592844616389	200
+165	304	15.592844616389	200
+165	367	18.592844616389	200
+
